@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EventHub - Booking</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+<style>
+* {margin:0; padding:0; box-sizing:border-box; font-family:'Roboto', sans-serif;}
+body,html {background: linear-gradient(135deg,#4b6cb7,#182848,#ff758c); color:#fff; min-height:100vh; overflow-x:hidden;}
+header {width:100%; padding:20px 50px; display:flex; justify-content:space-between; align-items:center; background:rgba(0,0,0,0.2); position:fixed; top:0; left:0; backdrop-filter:blur(12px); box-shadow:0 4px 15px rgba(0,0,0,0.3); z-index:10;}
+header .logo {font-size:28px; font-weight:bold; color:#ff758c;}
+nav a {margin:0 15px; text-decoration:none; font-weight:600; color:#fff; transition:0.3s;}
+nav a:hover {color:#ffb347;}
+.container {padding-top:130px; padding-bottom:60px; max-width:1200px; margin:auto;}
+.container h2 {text-align:center; font-size:28px; margin-bottom:30px; color:#FFD966;}
+.events-grid {display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:25px; align-items:start;}
+.card {background: rgba(255,255,255,0.1); padding:20px; border-radius:20px; backdrop-filter:blur(15px); box-shadow:0 10px 25px rgba(0,0,0,0.4); transition:transform 0.3s, box-shadow 0.3s; min-height:260px;}
+.card:hover {transform: translateY(-5px); box-shadow:0 15px 40px rgba(0,0,0,0.6);}
+.card h3 {margin-bottom:10px; color:#ff758c;}
+.card p {font-size:14px; margin-bottom:10px; line-height:1.4;}
+.card .meta {font-size:13px; opacity:0.9; margin-bottom:8px;}
+.card button {margin-top:10px; padding:10px 20px; border:none; border-radius:25px; background:#ff758c; color:#fff; font-weight:bold; cursor:pointer; transition:0.3s;}
+.card button:hover {background:#ff4b6b; transform:translateY(-2px);}
+.shape {position:absolute; border-radius:50%; opacity:0.15; animation: float 6s ease-in-out infinite; pointer-events:none; z-index:0;}
+.shape1 {width:140px; height:140px; background:#ff758c; top:10%; left:5%;}
+.shape2 {width:160px; height:160px; background:#4b6cb7; top:70%; left:85%;}
+.shape3 {width:100px; height:100px; background:#9b5de5; top:40%; left:50%;}
+@keyframes float {0%,100%{transform:translateY(0px);}50%{transform:translateY(-30px);}}
+@media(max-width:768px){.events-grid{grid-template-columns:1fr; padding:0 10px;}}
+</style>
+</head>
+<body>
+
+<div class="shape shape1"></div>
+<div class="shape shape2"></div>
+<div class="shape shape3"></div>
+
+<header>
+  <div class="logo">🌟 EventHub</div>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="events.html">Events</a>
+    <a href="booking.html">Booking</a>
+    <a href="profile.php">Profile</a>
+  </nav>
+</header>
+
+<div class="container">
+  <h2>📌 Available Bookings</h2>
+  <div class="events-grid" id="bookingsGrid"></div>
+</div>
+
+<script>
+const bookings = [
+  {id:1, title:"AI Hackathon", type:"Hackathon", mode:"Online", price:"free", desc:"Join our AI hackathon and build smart projects using ML & AI tools.", place:"Virtual Platform (Zoom + GitHub)", organisers:"Tech Society", date:"2025-11-10"},
+  {id:2, title:"Web Development Workshop", type:"Workshop", mode:"Offline", price:"paid", desc:"Hands-on coding workshop on frontend and backend web technologies.", place:"EventHub Campus, Chennai", organisers:"Dev Community", date:"2025-11-15"},
+  {id:3, title:"Tech Seminar 2025", type:"Seminar", mode:"Online", price:"free", desc:"Learn about the latest technology trends from industry experts.", place:"YouTube Live", organisers:"TechTalks Org", date:"2025-12-01"},
+  {id:4, title:"Cybersecurity Hackathon", type:"Hackathon", mode:"Offline", price:"paid", desc:"Challenge yourself with cybersecurity problems and win exciting prizes.", place:"EventHub Auditorium, Bangalore", organisers:"Cyber Warriors", date:"2025-12-05"},
+  {id:5, title:"AI Seminar", type:"Seminar", mode:"Online", price:"paid", desc:"Deep dive into AI topics with top researchers and live Q&A sessions.", place:"Microsoft Teams", organisers:"AI Research Group", date:"2025-12-10"},
+  {id:6, title:"Data Science Bootcamp", type:"Workshop", mode:"Online", price:"paid", desc:"Intensive bootcamp covering Python, ML models, and data visualization.", place:"Google Meet", organisers:"Data Wizards", date:"2025-12-15"},
+  {id:7, title:"Blockchain Seminar", type:"Seminar", mode:"Offline", price:"free", desc:"Explore blockchain technology, NFTs, and decentralized finance.", place:"IIT Delhi Campus", organisers:"Crypto Innovators", date:"2026-01-05"},
+  {id:8, title:"Mobile App Hackathon", type:"Hackathon", mode:"Online", price:"paid", desc:"Create innovative mobile apps in 48 hours and win exciting rewards.", place:"Discord + GitHub", organisers:"App Builders Hub", date:"2026-01-10"},
+  {id:9, title:"Cloud Computing Workshop", type:"Workshop", mode:"Online", price:"free", desc:"Learn about cloud computing and deploy your first app.", place:"AWS Cloud Virtual Lab", organisers:"Cloud Masters", date:"2026-01-15"},
+  {id:10, title:"Ethical Hacking Seminar", type:"Seminar", mode:"Offline", price:"paid", desc:"Discover ethical hacking techniques and cyber defense tools.", place:"Anna University Hall, Chennai", organisers:"CyberShield Org", date:"2026-01-20"},
+  {id:11, title:"AI for Healthcare Workshop", type:"Workshop", mode:"Online", price:"free", desc:"Use AI to solve healthcare problems with medical datasets.", place:"Google Meet", organisers:"HealthTech Labs", date:"2026-01-25"},
+  {id:12, title:"Startup Pitch Hackathon", type:"Hackathon", mode:"Offline", price:"paid", desc:"Pitch your startup ideas and win exciting prizes and funding!", place:"IIM Bangalore", organisers:"Startup Network", date:"2026-02-05"}
+];
+
+const grid = document.getElementById('bookingsGrid');
+
+bookings.forEach(ev => {
+  const formattedDate = new Date(ev.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+
+  const card = document.createElement('div');
+  card.className = 'card';
+  card.innerHTML = `
+    <h3>${ev.title}</h3>
+    <p>${ev.desc}</p>
+    <p class="meta"><strong>Date:</strong> ${formattedDate}</p>
+    <p class="meta"><strong>Type:</strong> ${ev.type} | <strong>Mode:</strong> ${ev.mode} | <strong>Price:</strong> ${ev.price}</p>
+    <p class="meta"><strong>Place:</strong> ${ev.place}</p>
+    <p class="meta"><strong>Organisers:</strong> ${ev.organisers}</p>
+    <button onclick="applyEvent(${ev.id}, '${ev.price}')">Apply / Register</button>
+  `;
+  grid.appendChild(card);
+});
+
+function applyEvent(id, price){
+  window.location.href = `event_details.html?id=${id}&price=${price}`;
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EventHub - Event Details</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+<style>
+* {margin:0; padding:0; box-sizing:border-box; font-family:'Roboto', sans-serif;}
+body, html {background: linear-gradient(135deg,#4b6cb7,#182848,#ff758c); color:#fff; min-height:100vh; overflow-x:hidden;}
+
+/* 🔹 HEADER (now exactly same as bookings.html) */
+header {
+  width:100%;
+  padding:20px 50px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  background:rgba(0,0,0,0.2);
+  position:fixed;
+  top:0; left:0;
+  backdrop-filter:blur(12px);
+  box-shadow:0 4px 15px rgba(0,0,0,0.3);
+  z-index:10;
+}
+header .logo {font-size:28px; font-weight:bold; color:#ff758c;}
+nav a {margin:0 15px; text-decoration:none; font-weight:600; color:#fff; transition:0.3s;}
+nav a:hover {color:#ffb347;}
+
+/* Container */
+.container {
+  max-width:550px;
+  margin:150px auto 50px auto;
+  background: rgba(255,255,255,0.12);
+  border-radius:20px;
+  backdrop-filter:blur(20px);
+  -webkit-backdrop-filter:blur(20px);
+  box-shadow: 0 6px 18px rgba(255,255,255,0.18);
+  padding:35px 28px;
+}
+h2 {color:#ff758c; text-align:center; margin-bottom:15px; font-size:26px;}
+p.event-desc {font-size:16px; margin-bottom:25px; line-height:1.5; text-align:center;}
+
+/* Form */
+form {display:flex; flex-direction:column; gap:18px;}
+input, select {
+  padding:13px 16px;
+  border-radius:12px;
+  border:none;
+  font-size:16px;
+  background: rgba(255,255,255,0.15);
+  color:#fff;
+  width:100%;
+}
+input::placeholder, select option {color: rgba(255,255,255,0.7);}
+
+/* Button */
+button {
+  padding:14px;
+  border:none;
+  border-radius:12px;
+  background:#ff758c;
+  color:#fff;
+  font-size:17px;
+  font-weight:bold;
+  cursor:pointer;
+  transition:0.3s;
+}
+button:hover {background:#ff4b6b; transform:translateY(-2px);}
+
+/* QR Section */
+.qr-section {text-align:center; margin:20px 0;}
+.qr-section img {
+  width:180px;
+  border-radius:12px;
+  box-shadow:0 5px 15px rgba(0,0,0,0.25);
+}
+
+/* Popup message */
+.popup-msg {
+  position: fixed;
+  top:50%;
+  left:50%;
+  transform: translate(-50%, -50%) scale(0.8);
+  background: rgba(40,40,70,0.95);
+  padding: 28px 45px;
+  border-radius: 15px;
+  color: #fff;
+  font-size: 20px;
+  font-weight: bold;
+  text-align: center;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+  z-index: 1000;
+  opacity:0;
+  transition: transform 0.4s ease, opacity 0.4s ease;
+}
+.popup-msg.show {opacity:1; transform: translate(-50%, -50%) scale(1);}
+.popup-success {background: rgba(20, 90, 20, 0.95); color: #90ee90;}
+
+/* Toast */
+.toast {
+  position: fixed;
+  top: 20px;
+  right: -350px;
+  background: #ff4b6b;
+  padding: 14px 25px;
+  border-radius: 10px;
+  color: #fff;
+  font-size: 15px;
+  font-weight: 600;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+  z-index: 1000;
+  opacity: 0;
+  transition: right 0.5s ease, opacity 0.5s ease;
+}
+.toast.show {right: 20px; opacity: 1;}
+
+/* Floating shapes */
+.shape {position:absolute; border-radius:50%; opacity:0.15; animation: float 6s ease-in-out infinite;}
+.shape1 {width:140px; height:140px; background:#ff758c; top:10%; left:5%;}
+.shape2 {width:160px; height:160px; background:#4b6cb7; top:70%; left:85%;}
+.shape3 {width:100px; height:100px; background:#9b5de5; top:40%; left:50%;}
+@keyframes float{0%,100%{transform:translateY(0px);}50%{transform:translateY(-30px);}}
+
+/* Responsive */
+@media(max-width:768px){
+  .container{margin:130px 20px 50px 20px; padding:20px;}
+}
+</style>
+</head>
+<body>
+
+<div class="shape shape1"></div>
+<div class="shape shape2"></div>
+<div class="shape shape3"></div>
+
+<header>
+  <div class="logo">🌟 EventHub</div>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="events.html">Events</a>
+    <a href="booking.html">Booking</a>
+    <a href="profile.php">Profile</a>
+  </nav>
+</header>
+
+<div class="container">
+  <h2 id="eventTitle">Event Title</h2>
+  <p class="event-desc" id="eventDesc">Event description goes here.</p>
+
+  <form id="eventForm">
+    <input type="text" id="name" placeholder="Full Name" required>
+    <input type="email" id="email" placeholder="Email" required>
+    <input type="tel" id="phone" placeholder="Phone Number" required>
+
+    <div id="paidSection" style="display:none;">
+      <p style="text-align:center; margin-bottom:10px;">Please pay ₹499 and upload screenshot of payment.</p>
+      <div class="qr-section">
+        <img src="qr code.png" alt="QR Code">
+      </div>
+      <input type="file" id="paymentScreenshot" accept="image/*">
+    </div>
+
+    <button type="submit">Register</button>
+  </form>
+</div>
+
+<div id="popupMsg" class="popup-msg"></div>
+<div id="toast" class="toast"></div>
+
+<script>
+// Get URL params
+function getQueryParam(param) {
+  const urlParams = new URLSearchParams(window.location.search);
+  return urlParams.get(param);
+}
+
+const events = [
+  {id:1, title:"AI Hackathon", desc:"Join our AI hackathon and build smart projects using ML & AI tools.", price:"free"},
+  {id:2, title:"Web Development Workshop", desc:"Hands-on coding workshop on frontend and backend web technologies.", price:"paid"},
+  {id:3, title:"Tech Seminar 2025", desc:"Learn about the latest technology trends from industry experts.", price:"free"},
+  {id:4, title:"Cybersecurity Hackathon", desc:"Challenge yourself with cybersecurity problems and win exciting prizes.", price:"paid"},
+  {id:5, title:"AI Seminar", desc:"Deep dive into AI topics with top researchers and live Q&A sessions.", price:"paid"},
+  {id:6, title:"Data Science Bootcamp", desc:"Intensive bootcamp covering Python, ML models, and data visualization.", price:"paid"},
+  {id:7, title:"Blockchain Seminar", desc:"Explore blockchain technology, NFTs, and decentralized finance.", price:"free"},
+  {id:8, title:"Mobile App Hackathon", desc:"Create innovative mobile apps in 48 hours and win exciting rewards.", price:"paid"},
+  {id:9, title:"Cloud Computing Workshop", desc:"Learn about cloud computing and deploy your first app.", price:"free"},
+  {id:10, title:"Ethical Hacking Seminar", desc:"Discover ethical hacking techniques and cyber defense tools.", price:"paid"},
+  {id:11, title:"AI for Healthcare Workshop", desc:"Use AI to solve healthcare problems with medical datasets.", price:"free"},
+  {id:12, title:"Startup Pitch Hackathon", desc:"Pitch your startup ideas and win exciting prizes and funding!", price:"paid"}
+];
+
+const eventId = parseInt(getQueryParam('id'));
+const selectedEvent = events.find(ev => ev.id === eventId) || {title:'Unknown Event', desc:'No description', price:'free'};
+
+// Fill event details
+document.getElementById('eventTitle').innerText = selectedEvent.title;
+document.getElementById('eventDesc').innerText = selectedEvent.desc;
+if(selectedEvent.price === 'paid'){
+  document.getElementById('paidSection').style.display = 'block';
+}
+
+// Popup functions
+function showPopup(message, success = false) {
+  const popup = document.getElementById("popupMsg");
+  popup.innerText = message;
+  if (success) popup.classList.add("popup-success");
+  else popup.classList.remove("popup-success");
+  popup.classList.add("show");
+}
+function hidePopup() {
+  const popup = document.getElementById("popupMsg");
+  popup.classList.remove("show");
+}
+function showToast(message, duration = 2500) {
+  const toast = document.getElementById("toast");
+  toast.innerText = message;
+  toast.classList.add("show");
+  setTimeout(() => toast.classList.remove("show"), duration);
+}
+
+// Handle form submission
+document.getElementById('eventForm').addEventListener('submit', function (e) {
+  e.preventDefault();
+
+  const formData = new FormData();
+  formData.append('event_id', selectedEvent.id);
+  formData.append('event_title', selectedEvent.title);
+  formData.append('name', document.getElementById('name').value);
+  formData.append('email', document.getElementById('email').value);
+  formData.append('phone', document.getElementById('phone').value);
+  formData.append('price', selectedEvent.price);
+
+  if (selectedEvent.price === 'paid') {
+    const file = document.getElementById('paymentScreenshot').files[0];
+    if (!file) {
+      showToast("❌ Please upload payment screenshot!");
+      return;
+    }
+    formData.append('payment_screenshot', file);
+  }
+
+  // ✅ Show processing popup immediately
+  showPopup("⏳ Processing your registration...");
+
+  // Wait briefly so popup renders before fetch starts
+  setTimeout(() => {
+    fetch('register.php', {
+      method: 'POST',
+      body: formData
+    })
+    .then(res => res.json())
+    .then(data => {
+      hidePopup(); // hide processing
+      if (data.status === 'success') {
+        showPopup("✅ Registration Successful!", true);
+        setTimeout(() => {
+          hidePopup();
+          window.location.href = 'booking.html';
+        }, 2000);
+      } else {
+        showToast("❌ " + data.message);
+      }
+    })
+    .catch(err => {
+      console.error(err);
+      hidePopup();
+      showToast("❌ Something went wrong!");
+    });
+  }, 500); // give 0.5 sec for popup to appear smoothly
+});
+</script>
+</body>
+</html>
+

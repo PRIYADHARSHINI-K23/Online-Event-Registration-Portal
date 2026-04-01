@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EventHub - Sign Up</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+<style>
+/* Your previous CSS here */
+* {margin:0; padding:0; box-sizing:border-box; font-family:'Roboto', sans-serif;}
+body, html {height:100%; width:100%; display:flex; justify-content:center; align-items:center; background: linear-gradient(135deg, #7b5ea2, #b185c4); position: relative; overflow: hidden;}
+.shape {position:absolute; border-radius:50%; opacity:0.3; animation: float 6s ease-in-out infinite; pointer-events:none;}
+.shape1 {width:120px; height:120px; background: rgba(255,255,255,0.35); top:20%; left:10%;}
+.shape2 {width:150px; height:150px; background: rgba(255,255,255,0.35); top:70%; left:80%;}
+.shape3 {width:80px; height:80px; background: rgba(255,255,255,0.35); top:50%; left:50%;}
+@keyframes float {0%,100%{transform:translateY(0px);}50%{transform:translateY(-30px);}}
+.container {background: rgba(255,255,255,0.12); padding:50px; border-radius:25px; backdrop-filter: blur(15px); box-shadow: 0 15px 40px rgba(0,0,0,0.3); width:380px; text-align:center; z-index:10; position: relative;}
+.container h2 {font-size:34px; margin-bottom:25px; color:#FFD966; text-shadow: 1px 1px 10px rgba(0,0,0,0.3);}
+input {width:100%; padding:12px 15px; margin:12px 0; border:none; border-radius:30px; font-size:16px; background: rgba(255,255,255,0.2); color:#fff;}
+input::placeholder {color: rgba(255,255,255,0.7);}
+button {width:100%; padding:12px; border:none; border-radius:30px; background:#FFD966; color:#333; font-size:16px; font-weight:bold; margin-top:15px; cursor:pointer; transition:0.3s; box-shadow:0 5px 20px rgba(0,0,0,0.3);}
+button:hover {background:#f1c232; transform: translateY(-3px);}
+.login {margin-top:15px; font-size:14px; color:white;}
+.login a {color: #FFD966; font-weight: bold; text-decoration: none;}
+.login a:hover {text-decoration: underline;}
+.success-msg {position: fixed; top:50%; left:50%; transform: translate(-50%, -50%) scale(0); background: rgba(20, 90, 20, 0.95); padding:30px 40px; border-radius:25px; color: #90ee90; font-size:20px; font-weight:bold; text-align:center; box-shadow: 0 10px 30px rgba(0,0,0,0.4); z-index:999; transition: transform 0.5s ease, opacity 0.5s ease; opacity:0;}
+.success-msg.show {transform: translate(-50%, -50%) scale(1); opacity:1;}
+</style>
+</head>
+<body>
+
+<div class="shape shape1"></div>
+<div class="shape shape2"></div>
+<div class="shape shape3"></div>
+
+<div class="container">
+  <h2>Create Your Account</h2>
+  <form id="signupForm">
+    <input type="text" id="name" placeholder="Full Name" required>
+    <input type="email" id="email" placeholder="Email" required>
+    <input type="password" id="password" placeholder="Password" required>
+    <input type="password" id="confirmPassword" placeholder="Confirm Password" required>
+    <button type="submit">Sign Up</button>
+  </form>
+  <div class="login">Already have an account? <a href="login.html">Login</a></div>
+</div>
+
+<div class="success-msg" id="successMsg">Account Created! Redirecting...</div>
+
+<script>
+document.getElementById('signupForm').addEventListener('submit', function(e){
+  e.preventDefault();
+
+  const name = document.getElementById('name').value.trim();
+  const email = document.getElementById('email').value.trim();
+  const password = document.getElementById('password').value.trim();
+  const confirmPassword = document.getElementById('confirmPassword').value.trim();
+  const successMsg = document.getElementById('successMsg');
+
+  if(name === '' || email === '' || password === '' || confirmPassword === ''){
+    alert('Please fill in all fields!');
+    return;
+  }
+
+  if(password !== confirmPassword){
+    alert('Passwords do not match!');
+    return;
+  }
+
+  // Send data to signup.php
+  fetch('signup.php', {
+    method: 'POST',
+    headers: {'Content-Type':'application/x-www-form-urlencoded'},
+    body: `name=${encodeURIComponent(name)}&email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`
+  })
+  .then(res => res.text())
+  .then(data => {
+    data = data.trim();
+    if(data === 'success'){
+      successMsg.classList.add('show');
+      setTimeout(() => {
+        successMsg.classList.remove('show');
+        window.location.href = 'login.html';
+      }, 2000);
+    } else {
+      alert(data); // Show errors like "Email already registered!"
+    }
+  })
+  .catch(err => {
+    console.error(err);
+    alert("Something went wrong! Make sure you're running a PHP server.");
+  });
+});
+</script>
+
+</body>
+</html>

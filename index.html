@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EventHub - Home</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+<!-- Font Awesome for Social Icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+* {margin:0; padding:0; box-sizing:border-box; font-family:'Roboto', sans-serif;}
+body, html {height:100%; width:100%; overflow-x:hidden;}
+
+/* Hero Section */
+.hero {
+  position:relative;
+  width:100%;
+  height:100vh;
+  background: 
+    linear-gradient(to bottom right, rgba(63,94,251,0.6), rgba(252,70,107,0.6)), 
+    url('https://images.unsplash.com/photo-1551836022-9b3c7d1e0b6f?auto=format&fit=crop&w=1470&q=80') no-repeat center center/cover;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  color:#fff;
+}
+.hero::before {
+  content:"";
+  position:absolute;
+  top:0; left:0; right:0; bottom:0;
+  background: rgba(0,0,0,0.35);
+  z-index:0;
+}
+
+/* Header */
+header {
+  position:absolute;
+  top:0; left:0;
+  width:100%;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:20px 50px;
+  z-index:10;
+}
+header .logo {
+  font-size:30px;
+  font-weight:700;
+  color:#ffdd59;
+  text-shadow: 1px 1px 5px rgba(0,0,0,0.5);
+}
+nav a {
+  margin:0 15px;
+  text-decoration:none;
+  font-weight:600;
+  color:#fff;
+  transition:0.3s;
+  font-size:16px;
+}
+nav a:hover {
+  color:#ffdd59;
+  text-shadow: 0 0 5px #fff;
+}
+
+/* Hero Content */
+.hero-content {
+  position:relative;
+  z-index:1;
+  max-width:850px;
+  text-align:center;
+  animation: fadeInUp 1.5s ease forwards;
+}
+.hero-content h1 {
+  font-size:60px;
+  font-weight:700;
+  line-height:1.1;
+  margin-bottom:20px;
+  color:#ffdd59;
+  text-shadow: 2px 2px 12px rgba(0,0,0,0.7);
+}
+.hero-content p {
+  font-size:22px;
+  line-height:1.5;
+  margin-bottom:40px;
+  color: #f5f5f5;
+  text-shadow: 1px 1px 8px rgba(0,0,0,0.6);
+}
+
+/* Buttons */
+.btn {
+  display:inline-block;
+  padding:18px 45px;
+  margin:10px;
+  font-size:18px;
+  font-weight:700;
+  color:#0f2027;
+  background:#ffdd59;
+  border-radius:50px;
+  text-decoration:none;
+  transition:0.5s;
+  box-shadow:0 5px 20px rgba(0,0,0,0.5);
+}
+.btn:hover {
+  background:#fff;
+  color:#0f2027;
+  transform: translateY(-3px);
+  box-shadow:0 8px 25px rgba(0,0,0,0.7);
+}
+
+/* Floating shapes */
+.shape {
+  position:absolute;
+  border-radius:50%;
+  opacity:0.15;
+  animation: float 6s ease-in-out infinite;
+}
+.shape1 {width:120px; height:120px; background:#ffdd59; top:20%; left:10%;}
+.shape2 {width:150px; height:150px; background:#ff6b81; top:70%; left:80%;}
+.shape3 {width:80px; height:80px; background:#1dd1a1; top:50%; left:50%;}
+@keyframes float {
+  0%,100% {transform: translateY(0px);}
+  50% {transform: translateY(-30px);}
+}
+
+/* Footer */
+footer {
+  background: linear-gradient(to right, #3f5efb, #fc466b);
+  color: white;
+  text-align: center;
+  padding: 40px 20px;
+  position: relative;
+}
+footer .footer-content {
+  max-width: 900px;
+  margin: auto;
+}
+footer h3 {
+  font-size: 26px;
+  color: #ffdd59;
+  margin-bottom: 15px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+footer p {
+  font-size: 16px;
+  line-height: 1.7;
+  margin-bottom: 25px;
+  color: #f5f5f5;
+  font-weight: 400;
+}
+footer .socials a {
+  color: white;
+  margin: 0 15px;
+  text-decoration: none;
+  font-size: 24px;
+  transition: 0.3s;
+}
+footer .socials a:hover {
+  color: #ffdd59;
+  transform: scale(1.2);
+}
+footer .bottom-text {
+  margin-top: 25px;
+  font-size: 14px;
+  color: #ddd;
+}
+
+/* Animations */
+@keyframes fadeInUp {
+  0% {opacity:0; transform: translateY(50px);}
+  100% {opacity:1; transform: translateY(0);}
+}
+
+/* Responsive */
+@media(max-width:768px){
+  .hero-content h1{font-size:42px;}
+  .hero-content p{font-size:18px;}
+  .btn{padding:15px 35px; font-size:16px;}
+}
+@media(max-width:480px){
+  .hero-content h1{font-size:32px;}
+  .hero-content p{font-size:16px;}
+  .btn{padding:12px 25px; font-size:14px;}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">🌟 EventHub</div>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="events.html">Events</a>
+    <a href="booking.html">Booking</a>
+    <a href="profile.php">Profile</a>
+  </nav>
+</header>
+
+<div class="hero">
+  <div class="hero-content">
+    <h1>🚀 Attend Premium Tech Events!</h1>
+    <p>Experience hackathons, workshops, and seminars like never before!  
+    Learn from industry experts, collaborate with innovators, and turn your passion into projects that make an impact.  
+    Every event is your gateway to success 💡</p>
+    <a href="login.html" class="btn">Login</a>
+    <a href="signup.html" class="btn">Sign Up</a>
+  </div>
+
+  <!-- Floating Shapes -->
+  <div class="shape shape1"></div>
+  <div class="shape shape2"></div>
+  <div class="shape shape3"></div>
+</div>
+
+<!-- Footer Section -->
+<footer>
+  <div class="footer-content">
+    <div class="socials">
+      <a href="#"><i class="fab fa-instagram"></i></a>
+      <a href="#"><i class="fab fa-whatsapp"></i></a>
+      <a href="#"><i class="fab fa-facebook"></i></a>
+      <a href="#"><i class="fab fa-linkedin"></i></a>
+    </div>
+
+    <div class="bottom-text">
+      © 2025 EventHub. All Rights Reserved. | Designed with ❤️ by EventHub
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

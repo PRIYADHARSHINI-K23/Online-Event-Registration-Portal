@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<booked_events>
+  <event id="1" event_id="3">
+    <title>Tech Seminar 2025</title>
+    <name>Dharshana</name>
+    <email>dharshu@gmail.com</email>
+    <phone>1234567890</phone>
+    <payment_type>free</payment_type>
+    <payment_screenshot/>
+  </event>
+  <event id="2" event_id="6">
+    <title>Data Science Bootcamp</title>
+    <name>Priya</name>
+    <email>prii@gmail.com</email>
+    <phone>99221144559</phone>
+    <payment_type>paid</payment_type>
+    <payment_screenshot/>
+  </event>
+  <event id="3" event_id="7">
+    <title>Blockchain Seminar</title>
+    <name>Baveedh</name>
+    <email>baveedh@gmail.com</email>
+    <phone>4567890122</phone>
+    <payment_type>free</payment_type>
+    <payment_screenshot/>
+  </event>
+  <event id="4" event_id="11">
+    <title>AI for Healthcare Workshop</title>
+    <name>Karthik</name>
+    <email>karthik@gmail.com</email>
+    <phone>1234567890</phone>
+    <payment_type>free</payment_type>
+    <payment_screenshot/>
+  </event>
+  <event id="5" event_id="2">
+    <title>Web Development Workshop</title>
+    <name>Vijaya</name>
+    <email>vijaya@gmail.com</email>
+    <phone>4567890122</phone>
+    <payment_type>paid</payment_type>
+    <payment_screenshot/>
+  </event>
+  <event id="6" event_id="3">
+    <title>Tech Seminar 2025</title>
+    <name>Baveedh</name>
+    <email>baveedh@gmail.com</email>
+    <phone>4567890122</phone>
+    <payment_type>free</payment_type>
+    <payment_screenshot/>
+  </event>
+  <event id="7" event_id="1">
+    <title>AI Hackathon</title>
+    <name>Vijaya</name>
+    <email>vijaya@gmail.com</email>
+    <phone>9988775544</phone>
+    <payment_type>free</payment_type>
+    <payment_screenshot/>
+  </event>
+  <event id="8" event_id="3">
+    <title>Tech Seminar 2025</title>
+    <name>Priyadharshini</name>
+    <email>priya@gmail.com</email>
+    <phone>1234567890</phone>
+    <payment_type>free</payment_type>
+    <payment_screenshot/>
+  </event>
+  <event id="9" event_id="7">
+    <title>Blockchain Seminar</title>
+    <name>Priyadharshini</name>
+    <email>priya@gmail.com</email>
+    <phone>1234567890</phone>
+    <payment_type>free</payment_type>
+    <payment_screenshot/>
+  </event>
+  <event id="10" event_id="9">
+    <title>Cloud Computing Workshop</title>
+    <name>Priyadharshini</name>
+    <email>priya@gmail.com</email>
+    <phone>1234567890</phone>
+    <payment_type>free</payment_type>
+    <payment_screenshot/>
+  </event>
+  <event id="11" event_id="1">
+    <title>AI Hackathon</title>
+    <name>Dharshana</name>
+    <email>priya@gmail.com</email>
+    <phone>1234567890</phone>
+    <payment_type>free</payment_type>
+    <payment_screenshot/>
+  </event>
+  <event id="12" event_id="11">
+    <title>AI for Healthcare Workshop</title>
+    <name>Priyadharshini</name>
+    <email>priya@gmail.com</email>
+    <phone>1234567890</phone>
+    <payment_type>free</payment_type>
+    <payment_screenshot/>
+  </event>
+  <event id="13" event_id="3">
+    <title>Tech Seminar 2025</title>
+    <name>Priyadharshini K</name>
+    <email>priya@gmail.com</email>
+    <phone>1234567890</phone>
+    <payment_type>free</payment_type>
+    <payment_screenshot/>
+  </event>
+  <event id="14" event_id="7">
+    <title>Blockchain Seminar</title>
+    <name>Priyadharshini K</name>
+    <email>priya@gmail.com</email>
+    <phone>1234567890</phone>
+    <payment_type>free</payment_type>
+    <payment_screenshot/>
+  </event>
+  <event id="15" event_id="11">
+    <title>AI for Healthcare Workshop</title>
+    <name>Karthik</name>
+    <email>karthik@gmail.com</email>
+    <phone>1234567890</phone>
+    <payment_type>free</payment_type>
+    <payment_screenshot/>
+  </event>
+  <event id="16" event_id="4">
+    <title>Cybersecurity Hackathon</title>
+    <name>Rajii</name>
+    <email>raji@gmail.com</email>
+    <phone>8833442255</phone>
+    <payment_type>paid</payment_type>
+    <payment_screenshot/>
+  </event>
+  <event id="17" event_id="11">
+    <title>AI for Healthcare Workshop</title>
+    <name>Priyadharshini K</name>
+    <email>priya@gmail.com</email>
+    <phone>1234567890</phone>
+    <payment_type>free</payment_type>
+    <payment_screenshot/>
+  </event>
+  <event id="18" event_id="7">
+    <title>Blockchain Seminar</title>
+    <name>Venkat</name>
+    <email>venkat@gmail.com</email>
+    <phone>9988775544</phone>
+    <payment_type>free</payment_type>
+    <payment_screenshot/>
+  </event>
+</booked_events>

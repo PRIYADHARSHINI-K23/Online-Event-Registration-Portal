@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EventHub - Events</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+<style>
+* {margin:0; padding:0; box-sizing:border-box; font-family:'Roboto', sans-serif;}
+body,html {background: linear-gradient(135deg,#4b6cb7,#182848,#ff758c); color:#fff; min-height:100vh; position:relative;}
+header {width:100%; padding:20px 50px; display:flex; justify-content:space-between; align-items:center; background:rgba(0,0,0,0.2); position:fixed; top:0; left:0; backdrop-filter:blur(12px); box-shadow:0 4px 15px rgba(0,0,0,0.3);}
+header .logo {font-size:28px; font-weight:bold; color:#ff758c;}
+nav a {margin:0 15px; text-decoration:none; font-weight:600; color:#fff; transition:0.3s;}
+nav a:hover {color:#ffb347;}
+.container {padding-top:120px; max-width:1200px; margin:auto;}
+.filters {display:flex; justify-content:flex-end; gap:15px; margin-bottom:20px; flex-wrap:wrap;}
+select {padding:8px 12px; border-radius:15px; border:none; font-size:14px; cursor:pointer; background: rgba(255,255,255,0.15); color:#fff;}
+select option {background:#fff; color:#333;}
+.events-grid {display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:25px;}
+.card {background: rgba(255,255,255,0.1); padding:20px; border-radius:20px; backdrop-filter:blur(15px); box-shadow:0 15px 35px rgba(0,0,0,0.4); transition:0.3s;}
+.card:hover {transform: translateY(-5px); box-shadow:0 20px 50px rgba(0,0,0,0.6);}
+.card h3 {margin-bottom:10px; color:#ff758c;}
+.card p {font-size:14px; margin-bottom:10px; line-height:1.4;}
+.shape {position:absolute; border-radius:50%; opacity:0.15; animation: float 6s ease-in-out infinite;}
+.shape1 {width:140px; height:140px; background:#ff758c; top:10%; left:5%;}
+.shape2 {width:160px; height:160px; background:#4b6cb7; top:70%; left:85%;}
+.shape3 {width:100px; height:100px; background:#9b5de5; top:40%; left:50%;}
+@keyframes float {0%,100%{transform:translateY(0px);}50%{transform:translateY(-30px);}}
+
+/* Center Booking Button */
+.center-button { text-align: center; margin: 40px 0; }
+.center-button button {
+  padding: 15px 40px;
+  border: none;
+  border-radius: 30px;
+  background: #ff758c;
+  color: #fff;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+}
+.center-button button:hover {
+  background: #ff4b6b;
+  transform: scale(1.05);
+}
+
+/* Redirecting popup */
+.redirect-msg {
+  position: fixed;
+  top:50%;
+  left:50%;
+  transform: translate(-50%, -50%) scale(0);
+  background: rgba(20, 90, 20, 0.95);
+  padding:30px 40px;
+  border-radius:25px;
+  color: #90ee90;
+  font-size:20px;
+  font-weight:bold;
+  text-align:center;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+  z-index:999;
+  transition: transform 0.5s ease, opacity 0.5s ease;
+  opacity:0;
+}
+.redirect-msg.show {
+  transform: translate(-50%, -50%) scale(1);
+  opacity:1;
+}
+</style>
+</head>
+<body>
+
+<div class="shape shape1"></div>
+<div class="shape shape2"></div>
+<div class="shape shape3"></div>
+
+<header>
+  <div class="logo">🌟 EventHub</div>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="events.html">Events</a>
+    <a href="booking.html">Booking</a>
+    <a href="profile.php">Profile</a>
+  </nav>
+</header>
+
+<div class="container">
+  <div class="filters">
+    <select id="typeFilter">
+      <option value="">All Types</option>
+      <option value="hackathon">Hackathon</option>
+      <option value="seminar">Seminar</option>
+      <option value="workshop">Workshop</option>
+    </select>
+    <select id="modeFilter">
+      <option value="">All Modes</option>
+      <option value="online">Online</option>
+      <option value="offline">Offline</option>
+    </select>
+    <select id="priceFilter">
+      <option value="">All Prices</option>
+      <option value="free">Free</option>
+      <option value="paid">Paid</option>
+    </select>
+  </div>
+
+  <div class="events-grid" id="eventsGrid"></div>
+
+  <div class="center-button">
+    <button onclick="bookEvent()">Click for Bookings</button>
+  </div>
+</div>
+
+<div class="redirect-msg" id="redirectMsg">Redirecting to Booking Page...</div>
+
+<script>
+const events = [
+  {id:1, title:"AI Hackathon", type:"hackathon", mode:"online", price:"free", desc:"Join our AI hackathon and build smart projects!", image:"images/ai_hackathon.jpg"},
+  {id:2, title:"Web Development Workshop", type:"workshop", mode:"offline", price:"paid", desc:"Hands-on web development workshop with certificate.", image:"images/web_workshop.jpg"},
+  {id:3, title:"Tech Seminar 2025", type:"seminar", mode:"online", price:"free", desc:"Learn about the latest tech trends from experts.", image:"images/tech_seminar.jpg"},
+  {id:4, title:"Cybersecurity Hackathon", type:"hackathon", mode:"offline", price:"paid", desc:"Challenge yourself in this cybersecurity hackathon.", image:"images/cybersecurity_hackathon.jpg"},
+  {id:5, title:"AI Seminar", type:"seminar", mode:"online", price:"paid", desc:"Deep dive into AI topics with top researchers.", image:"images/ai_seminar.jpg"},
+  {id:6, title:"Data Science Bootcamp", type:"workshop", mode:"online", price:"paid", desc:"Intensive bootcamp on data science and machine learning.", image:"images/data_bootcamp.jpg"},
+  {id:7, title:"Blockchain Seminar", type:"seminar", mode:"offline", price:"free", desc:"Explore blockchain technology and its applications.", image:"images/blockchain_seminar.jpg"},
+  {id:8, title:"Mobile App Hackathon", type:"hackathon", mode:"online", price:"paid", desc:"Create innovative mobile apps in 48 hours.", image:"images/mobile_hackathon.jpg"},
+  {id:9, title:"Cloud Computing Workshop", type:"workshop", mode:"online", price:"free", desc:"Learn about cloud computing and deploy your first app.", image:"images/cloud_workshop.jpg"},
+  {id:10, title:"Ethical Hacking Seminar", type:"seminar", mode:"offline", price:"paid", desc:"Discover the world of ethical hacking and cybersecurity.", image:"images/ethical_hacking.jpg"},
+  {id:11, title:"AI for Healthcare Workshop", type:"workshop", mode:"online", price:"free", desc:"Use AI to solve real-world healthcare problems.", image:"images/ai_healthcare.jpg"},
+  {id:12, title:"Startup Pitch Hackathon", type:"hackathon", mode:"offline", price:"paid", desc:"Pitch your startup ideas and win exciting prizes!", image:"images/startup_pitch.jpg"}
+];
+
+const eventsGrid = document.getElementById('eventsGrid');
+const typeFilter = document.getElementById('typeFilter');
+const modeFilter = document.getElementById('modeFilter');
+const priceFilter = document.getElementById('priceFilter');
+const redirectMsg = document.getElementById('redirectMsg');
+
+function renderEvents(){
+  eventsGrid.innerHTML = '';
+  let filtered = events.filter(ev => 
+    (typeFilter.value === '' || ev.type === typeFilter.value) &&
+    (modeFilter.value === '' || ev.mode === modeFilter.value) &&
+    (priceFilter.value === '' || ev.price === priceFilter.value)
+  );
+
+  filtered.forEach(ev => {
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.innerHTML = `
+      <img src="${ev.image}" alt="${ev.title}" style="width:100%; height:180px; border-radius:15px; object-fit:cover; margin-bottom:15px;">
+      <h3>${ev.title}</h3>
+      <p>${ev.desc}</p>
+    `;
+    eventsGrid.appendChild(card);
+  });
+}
+
+function bookEvent(){
+  redirectMsg.classList.add('show');
+  setTimeout(() => {
+    redirectMsg.classList.remove('show');
+    window.location.href = 'booking.html';
+  }, 2000);
+}
+
+typeFilter.addEventListener('change', renderEvents);
+modeFilter.addEventListener('change', renderEvents);
+priceFilter.addEventListener('change', renderEvents);
+
+renderEvents();
+</script>
+
+</body>
+</html>

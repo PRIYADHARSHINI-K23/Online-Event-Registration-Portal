@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EventHub - Login</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+<style>
+* {margin:0; padding:0; box-sizing:border-box; font-family:'Roboto', sans-serif;}
+body, html {height:100%; width:100%; display:flex; justify-content:center; align-items:center; background: linear-gradient(135deg, #7b5ea2, #b185c4); position: relative; overflow: hidden;}
+.shape {position:absolute; border-radius:50%; opacity:0.3; animation: float 6s ease-in-out infinite; pointer-events:none;}
+.shape1 {width:120px; height:120px; background: rgba(255,255,255,0.35); top:20%; left:10%;}
+.shape2 {width:150px; height:150px; background: rgba(255,255,255,0.35); top:70%; left:80%;}
+.shape3 {width:80px; height:80px; background: rgba(255,255,255,0.35); top:50%; left:50%;}
+@keyframes float {0%,100%{transform:translateY(0px);}50%{transform:translateY(-30px);}}
+.container {background: rgba(255,255,255,0.12); padding:50px; border-radius:25px; backdrop-filter: blur(15px); box-shadow: 0 15px 40px rgba(0,0,0,0.3); width:360px; text-align:center; z-index:10; position: relative;}
+.container h2 {font-size:34px; margin-bottom:25px; color:#FFD966; text-shadow: 1px 1px 10px rgba(0,0,0,0.25);}
+input {width:100%; padding:12px 15px; margin:12px 0; border:none; border-radius:30px; font-size:16px; background: rgba(255,255,255,0.25); color:#fff;}
+input::placeholder {color: rgba(255,255,255,0.8);}
+button {width:100%; padding:12px; border:none; border-radius:30px; background:#FFD966; color:#fff; font-size:16px; font-weight:bold; margin-top:15px; cursor:pointer; transition:0.3s; box-shadow:0 5px 20px rgba(0,0,0,0.25);}
+button:hover {background:#f1c232; transform: translateY(-3px);}
+.error {color:#ff6b6b; margin-bottom:10px; font-size:14px;}
+.forgot {margin-top:10px; font-size:14px;}
+.forgot a {color:#FFD966; text-decoration:none; font-weight:bold;}
+.forgot a:hover {text-decoration:underline;}
+.signup {margin-top:15px; font-size:14px; color:#FFD966;}
+.signup a {color: #FFD966; font-weight: bold; text-decoration: none;}
+.signup a:hover {text-decoration: underline;}
+.success-msg {position: fixed; top:50%; left:50%; transform: translate(-50%, -50%) scale(0); background: rgba(20, 90, 20, 0.95); padding:30px 40px; border-radius:25px; color: #90ee90; font-size:20px; font-weight:bold; text-align:center; box-shadow: 0 10px 30px rgba(0,0,0,0.4); z-index:999; transition: transform 0.5s ease, opacity 0.5s ease; opacity:0;}
+.success-msg.show {transform: translate(-50%, -50%) scale(1); opacity:1;}
+.success-msg.fade-out {
+  transform: translate(-50%, -50%) scale(0.9);
+  opacity: 0;
+}
+#forgotPopup {position: fixed; top:50%; left:50%; transform: translate(-50%, -50%) scale(0); background: rgba(255,255,255,0.15); padding:40px 50px; border-radius:25px; backdrop-filter: blur(20px); box-shadow: 0 15px 40px rgba(0,0,0,0.4); text-align:center; z-index:1000; width:360px; transition: transform 0.4s ease, opacity 0.4s ease; opacity:0;}
+#forgotPopup.show {transform: translate(-50%, -50%) scale(1); opacity:1;}
+#forgotPopup h3 {color:#FFD966; margin-bottom:20px;}
+.close-btn {position:absolute; top:15px; right:20px; font-size:18px; color:#FFD966; cursor:pointer; font-weight:bold;}
+</style>
+</head>
+<body>
+
+<div class="shape shape1"></div>
+<div class="shape shape2"></div>
+<div class="shape shape3"></div>
+
+<div class="container">
+  <h2>Login to EventHub</h2>
+  <div class="error" id="errorMsg"></div>
+  <form id="loginForm">
+    <input type="email" id="email" placeholder="Email" required>
+    <input type="password" id="password" placeholder="Password" required>
+    <div class="forgot"><a href="#" id="forgotLink">Forgot Password?</a></div>
+    <button type="submit">Login</button>
+  </form>
+  <div class="signup">Don't have an account? <a href="signup.html">Sign Up</a></div>
+</div>
+
+<div id="forgotPopup">
+  <span class="close-btn" id="closePopup">&times;</span>
+  <h3>Reset Password</h3>
+  <div class="error" id="forgotError"></div>
+  <input type="email" id="forgotEmail" placeholder="Enter your email" required>
+  <input type="password" id="newPassword" placeholder="New password" required>
+  <button id="resetBtn">Reset Password</button>
+</div>
+
+<div class="success-msg" id="successMsg">Login Successful! Redirecting...</div>
+
+<script>
+const successMsg = document.getElementById('successMsg');
+const errorMsg = document.getElementById('errorMsg');
+
+// Login form
+document.getElementById('loginForm').addEventListener('submit', function(e){
+    e.preventDefault();
+    const email = document.getElementById('email').value.trim();
+    const password = document.getElementById('password').value.trim();
+    errorMsg.innerText = '';
+
+    if(email === '' || password === ''){
+        errorMsg.innerText = 'Please fill in all fields!';
+        return;
+    }
+
+    fetch('login.php', {
+        method:'POST',
+        headers:{'Content-Type':'application/x-www-form-urlencoded'},
+        body:`email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`
+    })
+    .then(res => res.text())
+    .then(data => {
+        console.log("Response from PHP:", data);
+        data = data.trim();
+        console.log("PHP response:", JSON.stringify(data));
+
+    if (data === "success") {
+        console.log("Login success triggered"); // For debugging
+        //show popup
+        successMsg.textContent = 'Login Successful! Redirecting...';
+        successMsg.classList.remove('fade-out');
+        successMsg.classList.add('show');
+
+        // Stay visible for 30 seconds
+        setTimeout(() => {
+            successMsg.classList.add('fade-out');
+        }, 30000);
+
+        // Redirect after fade-out completes (0.8s later)
+        setTimeout(() => {
+            window.location.href = "events.html";
+        }, 2800);
+} else {
+    errorMsg.innerText = data;
+}
+    })
+    .catch(err => { console.error(err); errorMsg.innerText = "Something went wrong!"; });
+});
+
+// Forgot password popup
+const forgotLink = document.getElementById('forgotLink');
+const forgotPopup = document.getElementById('forgotPopup');
+const closePopup = document.getElementById('closePopup');
+const resetBtn = document.getElementById('resetBtn');
+const forgotError = document.getElementById('forgotError');
+
+forgotLink.addEventListener('click', (e) => { e.preventDefault(); forgotPopup.classList.add('show'); });
+closePopup.addEventListener('click', () => { forgotPopup.classList.remove('show'); });
+resetBtn.addEventListener('click', () => {
+    const email = document.getElementById('forgotEmail').value.trim();
+    const newPassword = document.getElementById('newPassword').value.trim();
+    if(email === '' || newPassword === ''){ forgotError.innerText = 'Please fill in all fields!'; return; }
+    forgotError.innerText = '';
+    forgotPopup.classList.remove('show');
+    successMsg.textContent = 'Password reset successful!';
+    successMsg.classList.add('show');
+    setTimeout(() => successMsg.classList.remove('show'), 2000);
+});
+</script>
+
+</body>
+</html>
